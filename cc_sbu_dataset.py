@@ -11,7 +11,6 @@ class CCSBUDataset(BaseDataset):
 
         self.inner_dataset = wds.DataPipeline(
             wds.ResampledShards(location),
-            wds.tarfile_to_samples(handler=wds.warn_and_continue),
             wds.shuffle(1000, handler=wds.warn_and_continue),
             wds.decode("pilrgb", handler=wds.warn_and_continue),
             wds.to_tuple("jpg", "json", handler=wds.warn_and_continue),
@@ -33,7 +32,6 @@ class CCSBUAlignDataset(CaptionDataset):
         # TODO this assumes image input, not general enough
         ann = self.annotation[index]
 
-        img_file = '{}.jpg'.format(ann["image_id"])
         image_path = os.path.join(self.vis_root, img_file)
         image = Image.open(image_path).convert("RGB")
 
